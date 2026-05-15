@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catatan Hidup - Blog Pribadiku</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">📖 Catatan Hidup</h1>
+            <div class="nav-links">
+                <a href="#" class="active">Beranda</a>
+                <a href="#" id="newPostBtn">+ Cerita Baru</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container">
+            <h2>Jejak Perjalanan Hidupku</h2>
+            <p>Setiap cerita adalah bagian dari diriku yang tak terlupakan</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="posts-grid" id="postsGrid">
+            <!-- Post akan dimuat di sini -->
+        </div>
+    </main>
+
+    <!-- Modal untuk menulis cerita baru -->
+    <div id="postModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>✍️ Tulis Pengalamanmu</h2>
+            <form id="postForm">
+                <input type="text" id="postTitle" placeholder="Judul cerita..." required>
+                <textarea id="postContent" placeholder="Ceritakan semuanya di sini... Tangis, tawa, jatuh, bangun, semua yang kamu rasakan..." rows="10" required></textarea>
+                <input type="text" id="postAuthor" placeholder="Namamu (opsional)">
+                <button type="submit">Simpan Cerita</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 - Setiap cerita adalah bagian dari perjalanan</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

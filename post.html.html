@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baca Cerita - Catatan Hidup</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">📖 Catatan Hidup</h1>
+            <div class="nav-links">
+                <a href="index.html">Beranda</a>
+                <a href="index.html" id="newPostBtn2">+ Cerita Baru</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div id="postDetail" class="post-detail">
+            <!-- Detail post akan dimuat di sini -->
+        </div>
+        <a href="index.html" class="back-btn">← Kembali ke Beranda</a>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 - Setiap cerita adalah bagian dari perjalanan</p>
+        </div>
+    </footer>
+
+    <script>
+        // Load post detail
+        const postData = localStorage.getItem('currentPost');
+        if (postData) {
+            const post = JSON.parse(postData);
+            document.getElementById('postDetail').innerHTML = `
+                <h1>${escapeHtml(post.title)}</h1>
+                <div class="post-meta">
+                    ${post.author ? `Ditulis oleh ${escapeHtml(post.author)} • ` : ''}
+                    ${new Date(post.date).toLocaleDateString('id-ID')} • 
+                    ${new Date(post.date).toLocaleTimeString('id-ID')}
+                </div>
+                <div class="post-body">
+                    ${escapeHtml(post.content).replace(/\n/g, '<br>')}
+                </div>
+            `;
+        } else {
+            document.getElementById('postDetail').innerHTML = '<p>Post tidak ditemukan.</p>';
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Modal handler untuk tombol di halaman post
+        const modal = document.createElement('div');
+        modal.id = 'postModal';
+        modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>✍️ Tulis Pengalamanmu</h2>
+                <form id="postForm">
+                    <input type="text" id="postTitle" placeholder="Judul cerita..." required>
+                    <textarea id="postContent" placeholder="Ceritakan semuanya di sini..." rows="10" required></textarea>
+                    <input type="text" id="postAuthor" placeholder="Namamu (opsional)">
+                    <button type="submit">Simpan Cerita</button>
+                </form>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        
+        const newPostBtn = document.getElementById('newPostBtn2');
+        const closeBtn = modal.querySelector('.close');
+        
+        if (newPostBtn) {
+            newPostBtn.onclick = (e) => {
+                e.preventDefault();
+                modal.style.display = 'block';
+            };
+        }
+        
+        if (closeBtn) {
+            closeBtn.onclick = () => {
+                modal.style.display = 'none';
+            };
+        }
+        
+        window.onclick = (event) => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        };
+        
+        const postForm = document.getElementById('postForm');
+        if (postForm) {
+            postForm.onsubmit = (e) => {
+                e.preventDefault();
+                const title = document.getElementById('postTitle').value;
+                const content = document.getElementById('postContent').value;
+                const author = document.getElementById('postAuthor').value;
+                
+                if (title && content) {
+                    // Simpan ke localStorage utama
+                    let posts = JSON.parse(localStorage.getItem('lifeBlogPosts') || '[]');
+                    const newPost = {
+                        id: Date.now(),
+                        title: title,
+                        content: content,
+                        author: author || 'Anonim',
+                        date: new Date().toISOString()
+                    };
+                    posts.unshift(newPost);
+                    localStorage.setItem('lifeBlogPosts', JSON.stringify(posts));
+                    modal.style.display = 'none';
+                    postForm.reset();
+                    alert('Cerita berhasil disimpan! 🎉');
+                } else {
+                    alert('Judul dan cerita tidak boleh kosong!');
+                }
+            };
+        }
+    </script>
+</body>
+</html>
